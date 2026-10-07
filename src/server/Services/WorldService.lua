@@ -210,7 +210,6 @@ function World.init(actionCallback, eventCallback, noticeCallback)
         arm.Orientation = Vector3.new(math.cos(angle) * 25, 0, math.sin(angle) * 25)
     end
     sign(kraken, Config.Kraken + Vector3.new(0, 28, 0), "THE FIRST KRAKEN")
-    workspace.FallenPartsDestroyHeight = -60
     game:GetService("Lighting").ClockTime = 14
     RunService.Heartbeat:Connect(function(dt)
         dt = math.min(dt, 0.1)
