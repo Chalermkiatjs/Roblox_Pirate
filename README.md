@@ -32,7 +32,7 @@ This project is structured for Rojo.
 
 Recommended setup:
 
-1. Install Rojo.
+1. Install Rojo, or install Aftman and run `aftman install` from this folder.
 2. Open Roblox Studio.
 3. Open the Rojo plugin.
 4. Run `rojo serve default.project.json` from this folder.
@@ -58,4 +58,3 @@ The server creates a simple runtime loop:
 - collection state, crew assignments, cargo, gold, and ship upgrades are saved through `DataService`
 
 This is intentionally code-first and asset-light so the next pass can connect Roblox Studio models, UI, and world geometry without rewriting the data architecture.
-
