@@ -23,7 +23,9 @@
 - [ ] Crew NPC models and recruitment flow
 - [ ] Island objective variety
 - [ ] Kraken arena presentation
-- [ ] Replace blockout ocean with terrain water and physical boat movement
+- [x] Replace blockout ocean with Terrain water and physical boat movement
+- [x] Native swimming, reboarding and shoreline ladders
+- [ ] Studio buoyancy/swimming playtest across ship tiers
 - [ ] Verify mobile/gamepad controls and multiplayer in Studio
 - [ ] DataStore session locking, retries, autosave and migration validation
 

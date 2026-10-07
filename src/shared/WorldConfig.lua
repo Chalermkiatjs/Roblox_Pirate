@@ -1,6 +1,6 @@
 return {
     Port = Vector3.new(0, 4, 0),
-    Berth = Vector3.new(0, 4, -85),
+    Berth = Vector3.new(0, 1, -85),
     Kraken = Vector3.new(0, 4, -1100),
     Islands = {
         StarterCove = Vector3.new(-130, 4, -190),
@@ -14,4 +14,17 @@ return {
     LootRange = 82,
     EventInterval = 40,
     LootCooldown = 25,
+    Water = {
+        Center = Vector3.new(0, -16, -700),
+        Size = Vector3.new(2200, 32, 2400),
+        SurfaceY = 0,
+        WaveSize = 0.35,
+        WaveSpeed = 12,
+    },
+    Sailing = {
+        HullDensity = 0.35,
+        Acceleration = 14,
+        ResponseTime = 1.2,
+        TurnSpeed = 0.9,
+    },
 }

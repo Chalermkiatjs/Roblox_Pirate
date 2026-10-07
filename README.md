@@ -78,11 +78,19 @@ cd "D:\Personal Project\PirateOcean"
 & "D:\Personal Project\Tools\Rojo\7.4.4\rojo.exe" serve default.project.json
 ```
 
-This is a blockout prototype with anchored, server-driven boats and a turn-based Kraken encounter. Art, physical sailing, player crew sharing and crafting remain on the roadmap.
+The ocean is native Terrain water with a 32-stud depth. Swimming uses the standard Roblox character controller. Jump off your boat to swim; approach its helm and use Board to rejoin it during a voyage. Truss ladders provide exits at the dock and each island.
+
+Ships use welded, unanchored assemblies, native water buoyancy, horizontal VectorForce propulsion and AlignOrientation steering/stability. Docked ships are anchored. Server-owned physics keeps movement authoritative. Normal sailing never teleports the ship; docking, sinking and out-of-bounds recovery reset its position and velocity.
+
+Terrain waves are visual; this is not a fluid or wave-displacement simulation. Native buoyancy uses the water surface, and the orientation constraint helps keep the boat upright. Hull density, thrust acceleration, response time, turn speed and water settings live in `src/shared/WorldConfig.lua`.
+
+This is a blockout prototype with a turn-based Kraken encounter. Art, player crew sharing and crafting remain on the roadmap.
 
 ## Verification
 
 Run `D:\Personal Project\Tools\Luau\0.741\luau.exe tests/config.spec.luau` from this project to check island access, progression, rarity tables and Kraken balance.
+
+Run the same tool with `tests/motion.spec.luau` to check acceleration, braking, reversal and frame-rate stability. These mathematical checks do not simulate Roblox buoyancy or character swimming.
 
 During Studio Play, use the server Command Bar to run the optional temporary-data service smoke test:
 
@@ -93,3 +101,11 @@ require(game.ServerScriptService.PirateOceanServer.Tests.ServiceSmoke)()
 The service smoke test checks cargo capacity, selling without clearing collection, upgrades, crew bonus and the boss reward. It does not modify a real player profile.
 
 Manual Studio checks: Set Sail; steer forward and reverse; collect at Starter Cove; sell at harbor; upgrade after earning gold; enter deeper seas; fire near Kraken; sink and confirm cargo loss; Stop and confirm the runtime world disappears. Test mobile/gamepad controls and two-player sessions before publishing.
+
+Optional server Command Bar buoyancy check (takes six seconds; creates and removes a separate test hull):
+
+```lua
+require(game.ServerScriptService.PirateOceanServer.Tests.WaterSmoke)()
+```
+
+Water playtest: launch each tier; verify that it settles on water; jump out and verify the Humanoid enters Swimming; swim back to Board; climb the dock and island ladders; collide with land; release controls and verify braking; dock and relaunch without residual velocity. Studio is required to verify these behaviors.

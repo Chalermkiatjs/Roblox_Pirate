@@ -4,6 +4,7 @@ local Config = require(shared.WorldConfig)
 local Islands = require(shared.IslandConfig)
 local Ship = require(script.Parent.ShipService)
 local Data = require(script.Parent.DataService)
+local Physics = require(script.Parent.ShipPhysics)
 local World = {}
 local boats, connections = {}, {}
 local root, action, event, notice
@@ -91,8 +92,11 @@ end
 function World.returnPort(player, sunk)
     local boat = boats[player]
     if not boat then return end
-    boat.throttle, boat.steer, boat.yaw, boat.eventTime = 0, 0, 0, 0
+    boat.throttle, boat.steer, boat.eventTime = 0, 0, 0
+    Physics.setActive(boat.rig, false)
     boat.model:PivotTo(CFrame.new(boat.berth))
+    Physics.reset(boat.rig)
+    boat.safeCFrame = boat.model:GetPivot()
     local state = Ship.getState(player)
     if state then state.inVoyage, state.currentDepth = false, 1 end
     if sunk then
@@ -130,9 +134,16 @@ function World.spawnBoat(player)
         end
     end
     sign(model, berth + Vector3.new(0, 24, 0), player.DisplayName .. " | " .. tier)
-    boats[player] = {model = model, seat = seat, berth = berth, index = index, yaw = 0, throttle = 0, steer = 0, lastInput = 0, eventTime = 0}
+    local rig = Physics.attach(model, hull)
+    boats[player] = {model = model, seat = seat, berth = berth, index = index, rig = rig,
+        throttle = 0, steer = 0, lastInput = 0, eventTime = 0, safeCFrame = model:GetPivot()}
     prompt(seat, "Board", player.DisplayName .. "'s ship", function(visitor)
-        if visitor == player and World.atPort(player) then action(player, "PrepareVoyage") end
+        if visitor ~= player then return end
+        local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+        if not hrp or (hrp.Position - seat.Position).Magnitude > 22 then return end
+        local state = Ship.getState(player)
+        if state and state.inVoyage then World.board(player)
+        elseif World.atPort(player) then action(player, "PrepareVoyage") end
     end)
 end
 
@@ -142,6 +153,7 @@ function World.addPlayer(player)
         local humanoid = character:WaitForChild("Humanoid", 10)
         local hrp = character:WaitForChild("HumanoidRootPart", 10)
         if not hrp or not humanoid or not player.Parent then return end
+        humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming, true)
         World.returnPort(player, false)
         character:PivotTo(CFrame.new(Config.Port + Vector3.new(0, 8, 0)))
     end
@@ -162,11 +174,17 @@ function World.init(actionCallback, eventCallback, noticeCallback)
     root.Name, root.Parent = "PirateOceanWorld", workspace
     local boatFolder = Instance.new("Folder")
     boatFolder.Name, boatFolder.Parent = "Boats", root
-    local ocean = part(root, "Ocean", Vector3.new(2200, 1, 2400), Vector3.new(0, 0, -700), Color3.fromRGB(24, 155, 176), Enum.Material.Glass)
-    ocean.CanCollide, ocean.Transparency = false, 0.25
-    part(root, "Seabed", Vector3.new(2200, 2, 2400), Vector3.new(0, -12, -700), Color3.fromRGB(64, 117, 123), Enum.Material.Sand)
+    local terrain = workspace.Terrain
+    terrain.WaterColor = Color3.fromRGB(24, 155, 176)
+    terrain.WaterTransparency, terrain.WaterReflectance = 0.3, 0.15
+    terrain.WaterWaveSize, terrain.WaterWaveSpeed = Config.Water.WaveSize, Config.Water.WaveSpeed
+    terrain:FillBlock(CFrame.new(Config.Water.Center), Config.Water.Size, Enum.Material.Water)
+    part(root, "Seabed", Vector3.new(2200, 2, 2400), Vector3.new(0, -33, -700), Color3.fromRGB(64, 117, 123), Enum.Material.Sand)
     part(root, "Port", Vector3.new(180, 8, 100), Config.Port, Color3.fromRGB(72, 131, 80), Enum.Material.Grass)
     part(root, "Dock", Vector3.new(150, 2, 40), Vector3.new(0, 4, -60), Color3.fromRGB(149, 116, 75))
+    local ladder = Instance.new("TrussPart")
+    ladder.Name, ladder.Size, ladder.Position = "DockLadder", Vector3.new(2, 16, 2), Vector3.new(64, -2, -81)
+    ladder.Anchored, ladder.Color, ladder.Parent = true, Color3.fromRGB(205, 210, 215), root
     local spawn = Instance.new("SpawnLocation")
     spawn.Size, spawn.Position = Vector3.new(8, 1, 8), Vector3.new(0, 9, 12)
     spawn.Anchored, spawn.Neutral, spawn.Transparency = true, true, 1
@@ -199,6 +217,10 @@ function World.init(actionCallback, eventCallback, noticeCallback)
         local chest = part(model, "TreasureChest", Vector3.new(7, 4, 5), pos + Vector3.new(0, 8, 24), Color3.fromRGB(212, 170, 44), Enum.Material.Metal)
         sign(model, pos + Vector3.new(0, 29, 0), config.displayName .. "\nSea " .. config.depth)
         prompt(chest, "Collect", config.displayName, function(player) action(player, "ExploreIsland", id) end)
+        local islandLadder = Instance.new("TrussPart")
+        islandLadder.Name, islandLadder.Size = "ShoreLadder", Vector3.new(2, 18, 2)
+        islandLadder.Position, islandLadder.Anchored = pos + Vector3.new(0, -4, 44), true
+        islandLadder.Parent = model
     end
     local kraken = Instance.new("Model")
     kraken.Name, kraken.Parent = "Kraken", root
@@ -211,25 +233,29 @@ function World.init(actionCallback, eventCallback, noticeCallback)
     end
     sign(kraken, Config.Kraken + Vector3.new(0, 28, 0), "THE FIRST KRAKEN")
     game:GetService("Lighting").ClockTime = 14
-    RunService.Heartbeat:Connect(function(dt)
+    RunService.PreSimulation:Connect(function(dt)
         dt = math.min(dt, 0.1)
         for player, boat in pairs(boats) do
             local state, stats = Ship.getState(player), Ship.getStats(player)
             if not state or not stats then continue end
             if state.health <= 0 then World.returnPort(player, true) end
+            Physics.setActive(boat.rig, state.inVoyage)
             if not state.inVoyage then continue end
             local seated = boat.seat.Occupant and boat.seat.Occupant.Parent == player.Character
             if not seated or os.clock() - boat.lastInput > 0.6 then boat.throttle, boat.steer = 0, 0 end
-            boat.yaw -= boat.steer * dt * 1.2
-            local old = boat.model:GetPivot().Position
-            local heading = CFrame.Angles(0, boat.yaw, 0)
-            local pos = old + heading.LookVector * boat.throttle * stats.speed * dt
-            local blocked = World.depth(pos) > stats.maxDepth or pos.Z > -72 or math.abs(pos.X) > 950 or pos.Z < -1500
-            for _, islandPos in pairs(Config.Islands) do
-                if (pos - islandPos).Magnitude < Config.IslandRadius + 16 then blocked = true end
+            local pos = boat.rig.hull.Position
+            local function allowed(p)
+                return World.depth(p) <= stats.maxDepth and p.Z <= -72 and math.abs(p.X) <= 950 and p.Z >= -1500
             end
-            if blocked then pos = old end
-            boat.model:PivotTo(CFrame.new(pos) * heading)
+            if not allowed(pos) or pos.Y < -20 then
+                boat.model:PivotTo(boat.safeCFrame)
+                boat.rig.hull.AssemblyLinearVelocity = Vector3.zero
+                boat.rig.hull.AssemblyAngularVelocity = Vector3.zero
+                pos = boat.rig.hull.Position
+            else boat.safeCFrame = boat.model:GetPivot() end
+            local predicted = pos + boat.rig.hull.AssemblyLinearVelocity * 2
+            local throttle = allowed(predicted) and boat.throttle or 0
+            Physics.update(boat.rig, dt, throttle, boat.steer, stats.speed)
             state.currentDepth = World.depth(pos)
             if -pos.Z > 160 and seated then
                 boat.eventTime += dt
