@@ -7,6 +7,7 @@ local remotes = shared:WaitForChild("Remotes")
 local Ships = require(shared.ShipConfig)
 local Islands = require(shared.IslandConfig)
 local Treasures = require(shared.TreasureConfig)
+local Sailing = require(shared.SailingConfig)
 local gui = Instance.new("ScreenGui")
 gui.Name, gui.ResetOnSpawn = "PirateOceanHud", false
 gui.Parent = player:WaitForChild("PlayerGui")
@@ -19,7 +20,7 @@ local function label(parent, name, size, pos, textSize)
     item.Parent = parent
     return item
 end
-local status = label(gui, "Status", UDim2.new(1, -24, 0, 74), UDim2.fromOffset(12, 8), 16)
+local status = label(gui, "Status", UDim2.new(1, -24, 0, 74), UDim2.fromOffset(12, 8), 14)
 status.Text = "PIRATE OCEAN | Loading..."
 local notice = label(gui, "Notice", UDim2.new(1, -24, 0, 36), UDim2.fromOffset(12, 86), 14)
 notice.BackgroundColor3 = Color3.fromRGB(46, 112, 95)
@@ -34,6 +35,7 @@ local grid = Instance.new("UIGridLayout")
 grid.CellSize, grid.CellPadding = UDim2.new(1 / 3, -6, 0, 50), UDim2.fromOffset(6, 6)
 grid.SortOrder, grid.Parent = Enum.SortOrder.LayoutOrder, actions
 local buttons = {}
+local stageButtons = {}
 local function button(name, order, callback)
     local b = Instance.new("TextButton")
     b.Name, b.LayoutOrder, b.Text = name, order, name
@@ -57,6 +59,8 @@ local messages = {
     NotEnoughGold = "Not enough gold",
     NoCrewSlot = "No free crew slot",
     SailNearKraken = "Sail closer to the Kraken",
+    TakeTheHelm = "Take your ship's helm first",
+    InvalidSailStage = "Invalid sail stage",
 }
 local current
 local pending = false
@@ -75,8 +79,15 @@ local function refresh()
     for _, amount in pairs(data.profile.cargo) do cargo += amount end
     for _ in pairs(data.profile.collection) do collection += 1 end
     local stats, state = data.ship.stats, data.ship.state
-    status.Text = string.format("PIRATE OCEAN | %s | Gold %d\nHP %d / %d | Cargo %d / %d | Sea %d | Collection %d / 7",
+    status.Text = string.format("PIRATE OCEAN | %s | Gold %d\nHP %d/%d | Cargo %d/%d\nSea %d | Collection %d/7",
         data.profile.currentShipTier, data.profile.gold, state.health, stats.maxHealth, cargo, stats.cargoSlots, state.currentDepth, collection)
+    if data.sailing then
+        local sailing = data.sailing
+        status.Text ..= string.format("\n%s | Speed %.1f | Sail %d%%", Sailing.Stages[sailing.stage].name, sailing.speed, math.floor(sailing.deployment * 100))
+        for stage, b in pairs(stageButtons) do
+            b.BackgroundColor3 = stage == sailing.stage and Color3.fromRGB(38, 132, 102) or Color3.fromRGB(44, 50, 55)
+        end
+    end
     buttons.Sail.Text = state.inVoyage and "Dock" or "Set Sail"
     buttons.Collect.Text = data.nearestIsland and ("Collect\n" .. Islands.Islands[data.nearestIsland].displayName) or "Collect"
     local nextTier = Ships.getNextTier(data.profile.currentShipTier)
@@ -97,9 +108,25 @@ button("Collect", 2, function() act("ExploreIsland") end)
 button("Sell", 3, function() act("SellCargo") end)
 button("Upgrade", 4, function() act("UpgradeShip") end)
 button("Fire", 5, function() act("AttackKraken") end)
+local stageBar = Instance.new("Frame")
+stageBar.Name, stageBar.Size = "SailingStages", UDim2.new(1, -24, 0, 40)
+stageBar.AnchorPoint, stageBar.Position = Vector2.new(0.5, 1), UDim2.new(0.5, 0, 1, -130)
+stageBar.BackgroundTransparency, stageBar.Parent = 1, gui
+local stageLimit = Instance.new("UISizeConstraint")
+stageLimit.MaxSize, stageLimit.Parent = Vector2.new(660, 40), stageBar
+for stage = 0, 2 do
+    local b = Instance.new("TextButton")
+    b.Name, b.Text = "Stage" .. stage, Sailing.Stages[stage].name
+    b.Size, b.Position = UDim2.new(1 / 3, -4, 1, 0), UDim2.new(stage / 3, 0, 0, 0)
+    b.BackgroundColor3, b.TextColor3 = Color3.fromRGB(44, 50, 55), Color3.new(1, 1, 1)
+    b.Font, b.TextSize = Enum.Font.GothamBold, 14
+    b.Parent = stageBar
+    b.Activated:Connect(function() act("SetSailStage", stage) end)
+    stageButtons[stage] = b
+end
 local collectionPanel = Instance.new("ScrollingFrame")
 collectionPanel.Name = "Collection"
-collectionPanel.Size, collectionPanel.Position = UDim2.new(1, -24, 1, -254), UDim2.fromOffset(12, 128)
+collectionPanel.Size, collectionPanel.Position = UDim2.new(1, -24, 1, -308), UDim2.fromOffset(12, 128)
 collectionPanel.BackgroundColor3, collectionPanel.BackgroundTransparency = Color3.fromRGB(27, 32, 36), 0.04
 collectionPanel.AutomaticCanvasSize, collectionPanel.CanvasSize = Enum.AutomaticSize.Y, UDim2.new()
 collectionPanel.ScrollBarThickness, collectionPanel.Visible = 6, false

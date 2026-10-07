@@ -28,7 +28,7 @@ end
 local function snapshot(player)
     local profile = Data.getProfile(player)
     if not profile then return nil end
-    return {profile = profile, ship = Ship.getShipSnapshot(player), atPort = World.atPort(player), nearestIsland = World.nearestIsland(player)}
+    return {profile = profile, ship = Ship.getShipSnapshot(player), atPort = World.atPort(player), nearestIsland = World.nearestIsland(player), sailing = World.sailing(player)}
 end
 
 local function handle(player, action, argument)
@@ -38,7 +38,9 @@ local function handle(player, action, argument)
     lastAction[player] = now
     local atPort, state = World.atPort(player), Ship.getState(player)
     local result
-    if action == "PrepareVoyage" then
+    if action == "SetSailStage" then
+        result = World.setSailStage(player, argument)
+    elseif action == "PrepareVoyage" then
         if not atPort then return {ok = false, error = "ReturnToPort"} end
         result = Ship.prepareVoyage(player)
         if result.ok then World.board(player) end
@@ -82,6 +84,7 @@ local function handle(player, action, argument)
         elseif action == "AttackKraken" then message = result.defeatedBoss and "Kraken defeated!" or ("Kraken HP: " .. result.bossHealth)
         elseif action == "AssignCrew" then message = argument .. " joined the crew"
         elseif action == "ReturnPort" then message = "Docked at harbor" end
+        if action == "SetSailStage" then message = require(shared.SailingConfig).Stages[argument].name end
         notify(player, message)
     end
     return result
@@ -93,7 +96,7 @@ local function remote(name, callback)
     instance.OnServerInvoke = callback
 end
 remote("RequestSnapshot", snapshot)
-for _, name in ipairs({"PrepareVoyage", "ReturnPort", "ExploreIsland", "AttackKraken", "UpgradeShip", "AssignCrew", "SellCargo"}) do
+for _, name in ipairs({"PrepareVoyage", "ReturnPort", "ExploreIsland", "AttackKraken", "UpgradeShip", "AssignCrew", "SellCargo", "SetSailStage"}) do
     remote(name, function(player, argument) return handle(player, name, argument) end)
 end
 World.init(function(player, action, argument)

@@ -25,6 +25,10 @@
 - [ ] Kraken arena presentation
 - [x] Replace blockout ocean with Terrain water and physical boat movement
 - [x] Native swimming, reboarding and shoreline ladders
+- [x] Paddles / half-sail / full-sail stages with animated deployment
+- [x] Wind-aware cruising, sail braking and auto-stowing without a pilot
+- [x] Native water reflections, atmosphere, clouds and local boat wakes
+- [ ] Studio visual playtest of stages, oars, wakes and graphics quality
 - [ ] Studio buoyancy/swimming playtest across ship tiers
 - [ ] Verify mobile/gamepad controls and multiplayer in Studio
 - [ ] DataStore session locking, retries, autosave and migration validation

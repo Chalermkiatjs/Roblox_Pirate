@@ -18,8 +18,8 @@ return {
         Center = Vector3.new(0, -16, -700),
         Size = Vector3.new(2200, 32, 2400),
         SurfaceY = 0,
-        WaveSize = 0.35,
-        WaveSpeed = 12,
+        WaveSize = 0.7,
+        WaveSpeed = 18,
     },
     Sailing = {
         HullDensity = 0.35,
