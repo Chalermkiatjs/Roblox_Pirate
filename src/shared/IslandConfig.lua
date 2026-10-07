@@ -21,7 +21,7 @@ local IslandConfig = {
         StormglassKey = {
             displayName = "Stormglass Key",
             depth = 3,
-            recommendedTier = "Sloop",
+            recommendedTier = "Brigantine",
             lootBudget = 4,
         },
         SkullmoonIsle = {
@@ -38,4 +38,3 @@ function IslandConfig.getIsland(islandId)
 end
 
 return IslandConfig
-

@@ -1,10 +1,10 @@
 .vscode/
 *.rbxl
 *.rbxlx
+*.rbxlx.lock
 *.rbxm
 *.rbxmx
 *.tmp
 *.log
 sourcemap.json
 Packages/
-

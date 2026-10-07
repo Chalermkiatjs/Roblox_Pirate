@@ -7,14 +7,20 @@ local SaveSchema = require(sharedRoot.SaveSchema)
 
 local DataService = {}
 
-local store = DataStoreService:GetDataStore(Constants.DataStoreName)
+local studio = game:GetService("RunService"):IsStudio()
+local store = not studio and DataStoreService:GetDataStore(Constants.DataStoreName) or nil
 local profiles = {}
+local writable = {}
 
 local function keyFor(player)
     return `player_{player.UserId}`
 end
 
 function DataService.loadProfile(player)
+    if studio then
+        profiles[player] = SaveSchema.createDefaultProfile()
+        return profiles[player]
+    end
     local success, data = pcall(function()
         return store:GetAsync(keyFor(player))
     end)
@@ -24,6 +30,7 @@ function DataService.loadProfile(player)
     end
 
     profiles[player] = SaveSchema.mergeDefaults(success and data or nil)
+    writable[player] = success
     return profiles[player]
 end
 
@@ -36,6 +43,9 @@ function DataService.saveProfile(player)
     if not profile then
         return false
     end
+
+    if studio then return true end
+    if not writable[player] then return false end
 
     local success, err = pcall(function()
         store:SetAsync(keyFor(player), profile)
@@ -50,6 +60,7 @@ end
 
 function DataService.releaseProfile(player)
     profiles[player] = nil
+    writable[player] = nil
 end
 
 function DataService.addGold(player, amount)
@@ -90,4 +101,3 @@ function DataService.addCollection(player, itemId, amount)
 end
 
 return DataService
-

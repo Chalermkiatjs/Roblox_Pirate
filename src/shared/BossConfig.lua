@@ -3,8 +3,8 @@ local BossConfig = {
         id = "Kraken",
         displayName = "The First Kraken",
         minDepth = 4,
-        maxHealth = 1500,
-        damagePerTurn = 85,
+        maxHealth = 280,
+        damagePerTurn = 25,
         requiredShipTier = "Brigantine",
         rewardGold = 1400,
         rewardItems = {
@@ -15,4 +15,3 @@ local BossConfig = {
 }
 
 return BossConfig
-

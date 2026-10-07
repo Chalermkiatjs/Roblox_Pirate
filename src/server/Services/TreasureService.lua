@@ -4,8 +4,18 @@ local sharedRoot = ReplicatedStorage:WaitForChild("PirateOcean")
 local TreasureConfig = require(sharedRoot.TreasureConfig)
 local WeightedRandom = require(sharedRoot.Util.WeightedRandom)
 local DataService = require(script.Parent.DataService)
+local ShipService = require(script.Parent.ShipService)
 
 local TreasureService = {}
+
+function TreasureService.remainingSlots(player)
+    local profile = DataService.getProfile(player)
+    local stats = ShipService.getStats(player)
+    if not profile or not stats then return 0 end
+    local used = 0
+    for _, amount in pairs(profile.cargo) do used += amount end
+    return math.max(0, stats.cargoSlots - used)
+end
 
 function TreasureService.rollRarity(depth)
     local depthBonus = math.max(0, depth - 1)
@@ -46,7 +56,7 @@ end
 function TreasureService.grantLoot(player, depth, rolls)
     local rewards = {}
 
-    for _ = 1, rolls do
+    for _ = 1, math.min(rolls, TreasureService.remainingSlots(player)) do
         local item = TreasureService.rollItem(depth)
         if item then
             rewards[item.id] = (rewards[item.id] or 0) + 1

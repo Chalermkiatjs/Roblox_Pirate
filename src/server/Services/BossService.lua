@@ -4,9 +4,14 @@ local sharedRoot = ReplicatedStorage:WaitForChild("PirateOcean")
 local BossConfig = require(sharedRoot.BossConfig)
 local DataService = require(script.Parent.DataService)
 local ShipService = require(script.Parent.ShipService)
+local TreasureService = require(script.Parent.TreasureService)
 
 local BossService = {}
 local activeKrakenHealth = {}
+
+function BossService.reset(player)
+    activeKrakenHealth[player] = nil
+end
 
 function BossService.attackKraken(player)
     local profile = DataService.getProfile(player)
@@ -35,7 +40,8 @@ function BossService.attackKraken(player)
         DataService.addGold(player, boss.rewardGold)
 
         for itemId, amount in pairs(boss.rewardItems) do
-            DataService.addCargo(player, itemId, amount)
+            local cargoAmount = math.min(amount, TreasureService.remainingSlots(player))
+            if cargoAmount > 0 then DataService.addCargo(player, itemId, cargoAmount) end
             DataService.addCollection(player, itemId, amount)
         end
 
@@ -59,4 +65,3 @@ function BossService.attackKraken(player)
 end
 
 return BossService
-

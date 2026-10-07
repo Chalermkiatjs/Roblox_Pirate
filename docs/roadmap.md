@@ -9,9 +9,11 @@
 - [x] Basic remotes
 - [x] Sell cargo flow
 - [x] Placeholder client bootstrap
-- [ ] Studio world with one port and five islands
-- [ ] Ship movement controller
-- [ ] First pass HUD
+- [x] Runtime blockout world with one port and five islands
+- [x] Server-driven ship movement controller
+- [x] First pass HUD, collection catalog and harbor actions
+- [x] Cargo capacity, loot cooldowns and server distance checks
+- [x] Studio temporary-data mode and service smoke test
 - [ ] Playtest economy tuning
 
 ## MVP 0.2
@@ -21,6 +23,9 @@
 - [ ] Crew NPC models and recruitment flow
 - [ ] Island objective variety
 - [ ] Kraken arena presentation
+- [ ] Replace blockout ocean with terrain water and physical boat movement
+- [ ] Verify mobile/gamepad controls and multiplayer in Studio
+- [ ] DataStore session locking, retries, autosave and migration validation
 
 ## MVP 0.3
 
