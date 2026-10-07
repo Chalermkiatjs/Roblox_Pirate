@@ -1,0 +1,24 @@
+{
+  "name": "PirateOcean",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "PirateOcean": {
+        "$path": "src/shared"
+      }
+    },
+    "ServerScriptService": {
+      "PirateOceanServer": {
+        "$path": "src/server"
+      }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "PirateOceanClient": {
+          "$path": "src/client"
+        }
+      }
+    }
+  }
+}
+
