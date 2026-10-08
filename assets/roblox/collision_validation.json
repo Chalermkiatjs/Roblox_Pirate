@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "collision_parts": 760,
+  "floor_samples": 6212,
+  "shell_samples": 2763,
+  "stair_avatar_samples": 444,
+  "transom_and_roofs_closed": true,
+  "studio_play": "Not tested"
+}

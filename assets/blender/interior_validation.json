@@ -1,0 +1,11 @@
+{
+  "sealed_hull_joins": true,
+  "sealed_deck_joins": true,
+  "open_hatch": true,
+  "walkable_gun_deck": true,
+  "wheel_pedestal_forward": true,
+  "revision": 2,
+  "deck_surface_samples": 1845,
+  "minimum_sampled_headroom_studs": 5.698403835296631,
+  "verified_treads": 14
+}

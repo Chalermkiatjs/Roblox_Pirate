@@ -1,10 +1,13 @@
 local Constants = require(script.Parent.Constants)
+local Combat = require(script.Parent.CombatConfig)
+local Rules = require(script.Parent.Util.CombatRules)
 
 local SaveSchema = {}
 
 SaveSchema.DefaultProfile = {
     schemaVersion = Constants.SchemaVersion,
     gold = 0,
+    bounty = 0,
     currentShipTier = "Raft",
     discoveredIslands = {},
     collection = {},
@@ -17,6 +20,7 @@ SaveSchema.DefaultProfile = {
     stats = {
         voyages = 0,
         krakenDefeats = 0,
+        combatDefeats = 0,
         deepestDepth = 0,
     },
 }
@@ -55,8 +59,8 @@ function SaveSchema.mergeDefaults(profile)
     end
 
     merged.schemaVersion = Constants.SchemaVersion
+    merged.bounty = Rules.bounty(merged.bounty, 0, Combat.MaxBounty)
     return merged
 end
 
 return SaveSchema
-

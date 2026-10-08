@@ -1,6 +1,6 @@
 local Constants = {
     DataStoreName = "PirateOcean_PlayerData_v1",
-    SchemaVersion = 1,
+    SchemaVersion = 2,
     MaxCargoItems = 60,
     BasePortId = "StarterPort",
     MaxCrewSlots = 3,
@@ -13,4 +13,3 @@ local Constants = {
 }
 
 return Constants
-

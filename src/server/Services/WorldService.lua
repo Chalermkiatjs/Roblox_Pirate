@@ -5,7 +5,11 @@ local Islands = require(shared.IslandConfig)
 local Ship = require(script.Parent.ShipService)
 local Data = require(script.Parent.DataService)
 local Physics = require(script.Parent.ShipPhysics)
+local Frigate = require(script.Parent.FrigateVisual)
+local FrigateConfig = require(shared.FrigateConfig)
 local Sailing = require(shared.SailingConfig)
+local Navigation = require(shared.Util.WorldNavigation)
+local Anchor = require(script.Parent.AnchorService)
 local TweenService = game:GetService("TweenService")
 local World = {}
 local boats, connections = {}, {}
@@ -57,7 +61,9 @@ end
 
 function World.atPort(player)
     local pos = World.position(player)
-    return pos ~= nil and math.abs(pos.X) < 800 and pos.Z > -150
+    if not pos or math.abs(pos.X) >= 800 then return false end
+    local boat = boats[player]
+    return pos.Z > -150 or (boat ~= nil and (pos - boat.berth).Magnitude <= Config.BerthPortRadius)
 end
 
 function World.nearestIsland(player)
@@ -77,6 +83,10 @@ function World.control(player, throttle, steer)
     if not boat or not humanoid or boat.seat.Occupant ~= humanoid then return end
     if type(throttle) ~= "number" or type(steer) ~= "number" then return end
     if throttle ~= throttle or steer ~= steer then return end
+    if boat.anchorDown then
+        boat.throttle, boat.steer = 0, 0
+        return
+    end
     boat.throttle, boat.steer = math.clamp(throttle, -1, 1), math.clamp(steer, -1, 1)
     boat.lastInput = os.clock()
 end
@@ -89,7 +99,13 @@ local function showSail(boat, stage)
     boat.model:SetAttribute("SailStage", stage)
     if not rig.sailPart or not rig.sailJoint then return end
     local height = 1.2 + Sailing.Stages[stage].deployment * 12.8
-    local info = TweenInfo.new(Sailing.DeployTime, Enum.EasingStyle.Linear)
+    local duration = Sailing.transitionDuration(rig.deployment, stage)
+    if duration <= 0.001 then
+        rig.sailPart.Size = Vector3.new(rig.hull.Size.X - 2, height, 0.4)
+        rig.sailJoint.C0 = CFrame.new(0, 23 - height / 2, -2)
+        return
+    end
+    local info = TweenInfo.new(duration, Enum.EasingStyle.Linear)
     boat.sailTween = TweenService:Create(rig.sailPart, info, {Size = Vector3.new(rig.hull.Size.X - 2, height, 0.4)})
     boat.sailJointTween = TweenService:Create(rig.sailJoint, info, {C0 = CFrame.new(0, 23 - height / 2, -2)})
     boat.sailTween:Play()
@@ -103,15 +119,58 @@ function World.setSailStage(player, stage)
     if not boat or not state or not state.inVoyage or not humanoid or boat.seat.Occupant ~= humanoid then
         return {ok = false, error = "TakeTheHelm"}
     end
+    if boat.anchorDown and stage ~= 0 then return {ok = false, error = "AnchorDown"} end
     showSail(boat, stage)
     return {ok = true, stage = stage}
+end
+
+function World.stepSailStage(player, direction)
+    local boat, state = boats[player], Ship.getState(player)
+    local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+    if not boat or not state or not state.inVoyage or not humanoid or boat.seat.Occupant ~= humanoid then return end
+    if boat.anchorDown then return end
+    local stage = Sailing.stepStage(boat.rig.stage, direction)
+    if not stage or stage == boat.rig.stage then return end
+    local now = os.clock()
+    if now - (boat.lastStageInput or -math.huge) < Sailing.StageInputInterval then return end
+    boat.lastStageInput = now
+    showSail(boat, stage)
 end
 
 function World.sailing(player)
     local boat = boats[player]
     if not boat then return nil end
     local velocity = boat.rig.hull.AssemblyLinearVelocity
-    return {stage = boat.rig.stage, deployment = boat.rig.deployment, speed = Vector3.new(velocity.X, 0, velocity.Z).Magnitude}
+    return {
+        stage = boat.rig.stage,
+        deployment = boat.rig.deployment,
+        speed = Vector3.new(velocity.X, 0, velocity.Z).Magnitude,
+        anchorDown = boat.anchorDown == true,
+        anchorRaising = boat.anchor.raising == true,
+    }
+end
+
+function World.dockingAction(player)
+    local boat, state = boats[player], Ship.getState(player)
+    if not boat or not state or not state.inVoyage or not Anchor.nearby(player, boat) then
+        return {ok = false, error = "GoToAnchor"}
+    end
+
+    if not boat.anchorDown then
+        boat.anchorDown = true
+        Anchor.reset(boat)
+        boat.throttle, boat.steer = 0, 0
+        showSail(boat, 0)
+        boat.rig.hull.AssemblyLinearVelocity = Vector3.zero
+        boat.rig.hull.AssemblyAngularVelocity = Vector3.zero
+        boat.rig.hull.Anchored = true
+        boat.model:SetAttribute("AnchorDown", true)
+        boat.model:SetAttribute("AnchorRaising", false)
+        return {ok = true, mode = "Dropped"}
+    end
+
+    Anchor.begin(boat)
+    return {ok = true, mode = "Raise"}
 end
 
 function World.board(player)
@@ -128,12 +187,17 @@ function World.returnPort(player, sunk)
     local boat = boats[player]
     if not boat then return end
     boat.throttle, boat.steer, boat.eventTime = 0, 0, 0
+    boat.anchorDown = false
+    Anchor.reset(boat)
     Physics.setActive(boat.rig, false)
     boat.model:PivotTo(CFrame.new(boat.berth))
     Physics.reset(boat.rig)
+    Frigate.update(boat.rig, 0, 0)
     showSail(boat, 0)
     boat.model:SetAttribute("Paddling", false)
     boat.model:SetAttribute("InVoyage", false)
+    boat.model:SetAttribute("AnchorDown", false)
+    boat.model:SetAttribute("AnchorRaising", false)
     boat.safeCFrame = boat.model:GetPivot()
     local state = Ship.getState(player)
     if state then state.inVoyage, state.currentDepth = false, 1 end
@@ -151,41 +215,58 @@ function World.spawnBoat(player)
     if old then old.model:Destroy() else
         for _, boat in pairs(boats) do index = math.max(index, boat.index + 1) end
     end
-    local berth = Config.Berth + Vector3.new((index - 1) * 35, 0, 0)
     local tier = Ship.getStats(player).tierId
+    local berth = Frigate.berth(Config.Berth, index, tier)
     local width = tier == "Raft" and 12 or (tier == "Sloop" and 16 or 22)
     local length = width * 1.7
     local model = Instance.new("Model")
     model.Name, model.Parent = player.Name .. "_" .. tier, root.Boats
-    local hull = part(model, "Hull", Vector3.new(width, 3, length), berth, Color3.fromRGB(100, 66, 43))
-    model.PrimaryPart = hull
-    part(model, "Deck", Vector3.new(width - 1, 1, length - 1), berth + Vector3.new(0, 2, 0), Color3.fromRGB(181, 142, 90))
-    local seat = Instance.new("VehicleSeat")
-    seat.Name, seat.Size, seat.Anchored = "Helm", Vector3.new(3, 1, 3), true
-    seat.CFrame, seat.Color = CFrame.new(berth + Vector3.new(0, 3, length / 4)), Color3.fromRGB(44, 44, 44)
-    seat.Parent = model
-    part(model, "Mast", Vector3.new(1, 22, 1), berth + Vector3.new(0, 13, -2), Color3.fromRGB(107, 77, 46))
-    part(model, "Sail", Vector3.new(width - 2, 1.2, 0.4), berth + Vector3.new(0, 22.4, -2), Color3.fromRGB(233, 239, 239), Enum.Material.Fabric)
-    for _, side in ipairs({-1, 1}) do
-        part(model, side == -1 and "LeftOar" or "RightOar", Vector3.new(10, 0.6, 1.4),
-            berth + Vector3.new(side * (width / 2 + 3), 1.5, 4), Color3.fromRGB(139, 103, 62))
-    end
-    if tier ~= "Raft" then
-        for _, x in ipairs({-width / 2, width / 2}) do
-            part(model, "Cannon", Vector3.new(4, 2, 3), berth + Vector3.new(x, 4, -5), Color3.fromRGB(48, 51, 53), Enum.Material.Metal)
+    local hull, seat = Frigate.create(model, berth, tier)
+    local imported = hull ~= nil
+    if not imported then
+        hull = part(model, "Hull", Vector3.new(width, 3, length), berth, Color3.fromRGB(100, 66, 43))
+        model.PrimaryPart = hull
+        part(model, "Deck", Vector3.new(width - 1, 1, length - 1), berth + Vector3.new(0, 2, 0), Color3.fromRGB(181, 142, 90))
+        seat = Instance.new("VehicleSeat")
+        seat.Name, seat.Size, seat.Anchored = "Helm", Vector3.new(3, 1, 3), true
+        seat.CFrame, seat.Color = CFrame.new(berth + Vector3.new(0, 3, length / 4)), Color3.fromRGB(44, 44, 44)
+        seat.Parent = model
+        part(model, "Mast", Vector3.new(1, 22, 1), berth + Vector3.new(0, 13, -2), Color3.fromRGB(107, 77, 46))
+        part(model, "Sail", Vector3.new(width - 2, 1.2, 0.4), berth + Vector3.new(0, 22.4, -2), Color3.fromRGB(233, 239, 239), Enum.Material.Fabric)
+        for _, side in ipairs({-1, 1}) do
+            part(model, side == -1 and "LeftOar" or "RightOar", Vector3.new(10, 0.6, 1.4),
+                berth + Vector3.new(side * (width / 2 + 3), 1.5, 4), Color3.fromRGB(139, 103, 62))
+        end
+        if tier ~= "Raft" then
+            for _, x in ipairs({-width / 2, width / 2}) do
+                part(model, "Cannon", Vector3.new(4, 2, 3), berth + Vector3.new(x, 4, -5), Color3.fromRGB(48, 51, 53), Enum.Material.Metal)
+            end
         end
     end
-    sign(model, berth + Vector3.new(0, 24, 0), player.DisplayName .. " | " .. tier)
+    sign(model, berth + Vector3.new(0, imported and FrigateConfig.SignHeight * FrigateConfig.ArtScale or 24, 0), player.DisplayName .. " | " .. tier)
     local rig = Physics.attach(model, hull)
+    if imported then Frigate.bind(rig) end
+    local _, boundsSize = model:GetBoundingBox()
+    local margin = math.sqrt(boundsSize.X * boundsSize.X + boundsSize.Z * boundsSize.Z) / 2 + 16
+    local water = Config.Water
     boats[player] = {model = model, seat = seat, berth = berth, index = index, rig = rig,
-        throttle = 0, steer = 0, lastInput = 0, eventTime = 0, safeCFrame = model:GetPivot()}
+        navigationBounds = Navigation.bounds(water.Center.X, water.Center.Z, water.Size.X, water.Size.Z, margin),
+        throttle = 0, steer = 0, lastInput = 0, eventTime = 0, safeCFrame = model:GetPivot(),
+        anchorDown = false}
+    boats[player].anchor = Anchor.create(model, hull, imported, length, function(visitor)
+        if visitor == player then action(player, "DockingAction") end
+    end)
+    Anchor.reset(boats[player])
     model:SetAttribute("SailStage", 0)
     model:SetAttribute("Paddling", false)
     model:SetAttribute("InVoyage", false)
-    prompt(seat, "Board", player.DisplayName .. "'s ship", function(visitor)
+    model:SetAttribute("AnchorDown", false)
+    model:SetAttribute("AnchorRaising", false)
+    local boardingPoint = imported and hull or seat
+    prompt(boardingPoint, "Board", player.DisplayName .. "'s ship", function(visitor)
         if visitor ~= player then return end
         local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-        if not hrp or (hrp.Position - seat.Position).Magnitude > 22 then return end
+        if not hrp or (hrp.Position - boardingPoint.Position).Magnitude > 22 then return end
         local state = Ship.getState(player)
         if state and state.inVoyage then World.board(player)
         elseif World.atPort(player) then action(player, "PrepareVoyage") end
@@ -215,13 +296,14 @@ end
 
 function World.init(actionCallback, eventCallback, noticeCallback)
     action, event, notice = actionCallback, eventCallback, noticeCallback
+    Frigate.prepareTemplate()
     root = Instance.new("Folder")
     root.Name, root.Parent = "PirateOceanWorld", workspace
     local boatFolder = Instance.new("Folder")
     boatFolder.Name, boatFolder.Parent = "Boats", root
     local terrain = workspace.Terrain
-    terrain.WaterColor = Color3.fromRGB(20, 93, 112)
-    terrain.WaterTransparency, terrain.WaterReflectance = 0.38, 0.4
+    terrain.WaterColor = Color3.fromRGB(17, 83, 99)
+    terrain.WaterTransparency, terrain.WaterReflectance = 0.27, 0.55
     terrain.WaterWaveSize, terrain.WaterWaveSpeed = Config.Water.WaveSize, Config.Water.WaveSpeed
     terrain:FillBlock(CFrame.new(Config.Water.Center), Config.Water.Size, Enum.Material.Water)
     part(root, "Seabed", Vector3.new(2200, 2, 2400), Vector3.new(0, -33, -700), Color3.fromRGB(64, 117, 123), Enum.Material.Sand)
@@ -294,25 +376,39 @@ function World.init(actionCallback, eventCallback, noticeCallback)
             if state.health <= 0 then World.returnPort(player, true) end
             Physics.setActive(boat.rig, state.inVoyage)
             if boat.model:GetAttribute("InVoyage") ~= state.inVoyage then boat.model:SetAttribute("InVoyage", state.inVoyage) end
+            if Anchor.update(player, boat, dt, state.inVoyage) then
+                boat.anchorDown = false
+                boat.rig.hull.Anchored = false
+                boat.rig.hull:SetNetworkOwner(nil)
+                boat.model:SetAttribute("AnchorDown", false)
+                Anchor.reset(boat)
+                boat.safeCFrame = boat.model:GetPivot()
+                notice(player, "Anchor raised")
+            end
             if not state.inVoyage then continue end
+            if boat.anchorDown then
+                boat.throttle, boat.steer = 0, 0
+                if boat.rig.stage ~= 0 then showSail(boat, 0) end
+                boat.rig.hull.AssemblyLinearVelocity = Vector3.zero
+                boat.rig.hull.AssemblyAngularVelocity = Vector3.zero
+                boat.rig.hull.Anchored = true
+                continue
+            end
             local seated = boat.seat.Occupant and boat.seat.Occupant.Parent == player.Character
             if not seated or os.clock() - boat.lastInput > 0.6 then boat.throttle, boat.steer = 0, 0 end
             if not seated and boat.rig.stage ~= 0 then showSail(boat, 0) end
-            local paddling = seated ~= nil and seated ~= false and boat.rig.stage == 0 and math.abs(boat.throttle) > 0.1
+            local paddling = seated ~= nil and seated ~= false and boat.rig.deployment < 0.001
+                and Sailing.Stages[boat.rig.stage].throttle ~= 0
             if boat.model:GetAttribute("Paddling") ~= paddling then boat.model:SetAttribute("Paddling", paddling) end
             local pos = boat.rig.hull.Position
-            local function allowed(p)
-                return World.depth(p) <= stats.maxDepth and p.Z <= -72 and math.abs(p.X) <= 950 and p.Z >= -1500
-            end
-            if not allowed(pos) or pos.Y < -20 then
+            if not Navigation.contains(pos.X, pos.Z, boat.navigationBounds) or pos.Y < -20 then
                 boat.model:PivotTo(boat.safeCFrame)
                 boat.rig.hull.AssemblyLinearVelocity = Vector3.zero
                 boat.rig.hull.AssemblyAngularVelocity = Vector3.zero
                 pos = boat.rig.hull.Position
             else boat.safeCFrame = boat.model:GetPivot() end
-            local predicted = pos + boat.rig.hull.AssemblyLinearVelocity * 2
-            local throttle = allowed(predicted) and boat.throttle or 0
-            Physics.update(boat.rig, dt, throttle, boat.steer, allowed(predicted) and stats.speed or 0)
+            Physics.update(boat.rig, dt, boat.throttle, boat.steer, stats.speed, boat.navigationBounds)
+            Frigate.update(boat.rig, boat.rig.deployment, boat.rig.rudder)
             state.currentDepth = World.depth(pos)
             if -pos.Z > 160 and seated then
                 boat.eventTime += dt

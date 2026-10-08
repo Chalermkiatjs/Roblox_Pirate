@@ -1,0 +1,444 @@
+{
+  "source": "../blender/reference_frigate.blend",
+  "mesh_objects": 80,
+  "total_triangles": 209862,
+  "maximum_triangles_per_mesh": 18000,
+  "export_budget_per_mesh": 18000,
+  "roblox_bow_axis": "-Z",
+  "roblox_up_axis": "+Y",
+  "import_scale_unit": "Studs",
+  "bounds_min": [
+    -7.053725719451904,
+    -0.09634552150964737,
+    -33.02339172363281
+  ],
+  "bounds_max": [
+    7.053725719451904,
+    37.0,
+    22.79458236694336
+  ],
+  "dimensions_studs": [
+    14.107451438903809,
+    37.09634552150965,
+    55.81797409057617
+  ],
+  "colors": "Per-face linear RGBA stored as vertex colors; keep Ignore Vertex Colors disabled",
+  "limitations": "Detailed static asset. Procedural textures, gameplay collision, LOD and sail animation are not included.",
+  "studio_import_status": "Not imported or uploaded by this script",
+  "interior_revision": 2,
+  "collision_revision": 3,
+  "access_hatch_source": {
+    "z0": 2.4,
+    "z1": 8.6,
+    "width": 2.8
+  },
+  "gun_deck_floor_source_y": 4.18,
+  "wheel_source": {
+    "x": 14.2,
+    "y": 0,
+    "z": 9.65,
+    "grip_facing": "+X (aft)"
+  },
+  "components": [
+    {
+      "name": "Frigate_Anchors_And_Bow_Headrails",
+      "source": "Frigate_Anchors_And_Bow_Headrails",
+      "triangles": 1032
+    },
+    {
+      "name": "Frigate_Bow_Stem",
+      "source": "Frigate_Bow_Stem",
+      "triangles": 1560
+    },
+    {
+      "name": "Frigate_Bowsprit_And_Booms",
+      "source": "Frigate_Bowsprit_And_Booms",
+      "triangles": 1696
+    },
+    {
+      "name": "Frigate_Bulwarks_And_Railings",
+      "source": "Frigate_Bulwarks_And_Railings",
+      "triangles": 6392
+    },
+    {
+      "name": "Frigate_Cannon_Port_01",
+      "source": "Frigate_Cannon_Port_01",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_02",
+      "source": "Frigate_Cannon_Port_02",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_03",
+      "source": "Frigate_Cannon_Port_03",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_04",
+      "source": "Frigate_Cannon_Port_04",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_05",
+      "source": "Frigate_Cannon_Port_05",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_06",
+      "source": "Frigate_Cannon_Port_06",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_07",
+      "source": "Frigate_Cannon_Port_07",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_08",
+      "source": "Frigate_Cannon_Port_08",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_09",
+      "source": "Frigate_Cannon_Port_09",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_10",
+      "source": "Frigate_Cannon_Port_10",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_01",
+      "source": "Frigate_Cannon_Starboard_01",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_02",
+      "source": "Frigate_Cannon_Starboard_02",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_03",
+      "source": "Frigate_Cannon_Starboard_03",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_04",
+      "source": "Frigate_Cannon_Starboard_04",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_05",
+      "source": "Frigate_Cannon_Starboard_05",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_06",
+      "source": "Frigate_Cannon_Starboard_06",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_07",
+      "source": "Frigate_Cannon_Starboard_07",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_08",
+      "source": "Frigate_Cannon_Starboard_08",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_09",
+      "source": "Frigate_Cannon_Starboard_09",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_10",
+      "source": "Frigate_Cannon_Starboard_10",
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Companionway_Stairs",
+      "source": "Frigate_Companionway_Stairs",
+      "triangles": 648
+    },
+    {
+      "name": "Frigate_Deck_Access_Stairs",
+      "source": "Frigate_Deck_Access_Stairs",
+      "triangles": 632
+    },
+    {
+      "name": "Frigate_Deck_Fittings",
+      "source": "Frigate_Deck_Fittings",
+      "triangles": 4732
+    },
+    {
+      "name": "Frigate_Flying_Jib",
+      "source": "Frigate_Flying_Jib",
+      "triangles": 1296
+    },
+    {
+      "name": "Frigate_Flying_Jib_Boltropes_And_Seams",
+      "source": "Frigate_Flying_Jib_Boltropes_And_Seams",
+      "triangles": 2528
+    },
+    {
+      "name": "Frigate_Foremast_Sail_1",
+      "source": "Frigate_Foremast_Sail_1",
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Foremast_Sail_1_Boltropes_And_Seams",
+      "source": "Frigate_Foremast_Sail_1_Boltropes_And_Seams",
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Foremast_Sail_2",
+      "source": "Frigate_Foremast_Sail_2",
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Foremast_Sail_2_Boltropes_And_Seams",
+      "source": "Frigate_Foremast_Sail_2_Boltropes_And_Seams",
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Foremast_Sail_3",
+      "source": "Frigate_Foremast_Sail_3",
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Foremast_Sail_3_Boltropes_And_Seams",
+      "source": "Frigate_Foremast_Sail_3_Boltropes_And_Seams",
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Foremast_Shrouds_Ratlines_And_Running_Rig",
+      "source": "Frigate_Foremast_Shrouds_Ratlines_And_Running_Rig",
+      "triangles": 7616
+    },
+    {
+      "name": "Frigate_Foremast_Spars_And_Tops",
+      "source": "Frigate_Foremast_Spars_And_Tops",
+      "triangles": 1748
+    },
+    {
+      "name": "Frigate_Forestays_And_Connecting_Stays",
+      "source": "Frigate_Forestays_And_Connecting_Stays",
+      "triangles": 1624
+    },
+    {
+      "name": "Frigate_Gun_Deck_Floor",
+      "source": "Frigate_Gun_Deck_Floor",
+      "triangles": 10440
+    },
+    {
+      "name": "Frigate_Gunport_Frames_And_Lids",
+      "source": "Frigate_Gunport_Frames_And_Lids",
+      "triangles": 2040
+    },
+    {
+      "name": "Frigate_Hull_Planking_Chunk01",
+      "source": "Frigate_Hull_Planking",
+      "triangles": 18000
+    },
+    {
+      "name": "Frigate_Hull_Planking_Chunk02",
+      "source": "Frigate_Hull_Planking",
+      "triangles": 15384
+    },
+    {
+      "name": "Frigate_Inner_Jib",
+      "source": "Frigate_Inner_Jib",
+      "triangles": 1296
+    },
+    {
+      "name": "Frigate_Inner_Jib_Boltropes_And_Seams",
+      "source": "Frigate_Inner_Jib_Boltropes_And_Seams",
+      "triangles": 2528
+    },
+    {
+      "name": "Frigate_Interior_Bulkheads",
+      "source": "Frigate_Interior_Bulkheads",
+      "triangles": 480
+    },
+    {
+      "name": "Frigate_Interior_Cargo_And_Berths",
+      "source": "Frigate_Interior_Cargo_And_Berths",
+      "triangles": 384
+    },
+    {
+      "name": "Frigate_Interior_Frames_And_Beams",
+      "source": "Frigate_Interior_Frames_And_Beams",
+      "triangles": 1356
+    },
+    {
+      "name": "Frigate_Interior_Lanterns",
+      "source": "Frigate_Interior_Lanterns",
+      "triangles": 816
+    },
+    {
+      "name": "Frigate_Keel_Closure",
+      "source": "Frigate_Keel_Closure",
+      "triangles": 104
+    },
+    {
+      "name": "Frigate_Keel_Stem_Transom",
+      "source": "Frigate_Keel_Stem_Transom",
+      "triangles": 968
+    },
+    {
+      "name": "Frigate_Main_Deck_Planks",
+      "source": "Frigate_Main_Deck_Planks",
+      "triangles": 10056
+    },
+    {
+      "name": "Frigate_Mainmast_Pennant",
+      "source": "Frigate_Mainmast_Pennant",
+      "triangles": 32
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_1",
+      "source": "Frigate_Mainmast_Sail_1",
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_1_Boltropes_And_Seams",
+      "source": "Frigate_Mainmast_Sail_1_Boltropes_And_Seams",
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_2",
+      "source": "Frigate_Mainmast_Sail_2",
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_2_Boltropes_And_Seams",
+      "source": "Frigate_Mainmast_Sail_2_Boltropes_And_Seams",
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_3",
+      "source": "Frigate_Mainmast_Sail_3",
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_3_Boltropes_And_Seams",
+      "source": "Frigate_Mainmast_Sail_3_Boltropes_And_Seams",
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Mainmast_Shrouds_Ratlines_And_Running_Rig",
+      "source": "Frigate_Mainmast_Shrouds_Ratlines_And_Running_Rig",
+      "triangles": 7616
+    },
+    {
+      "name": "Frigate_Mainmast_Spars_And_Tops",
+      "source": "Frigate_Mainmast_Spars_And_Tops",
+      "triangles": 1748
+    },
+    {
+      "name": "Frigate_Mizzen_Gaff_Sail",
+      "source": "Frigate_Mizzen_Gaff_Sail",
+      "triangles": 1296
+    },
+    {
+      "name": "Frigate_Mizzen_Gaff_Sail_Boltropes_And_Seams",
+      "source": "Frigate_Mizzen_Gaff_Sail_Boltropes_And_Seams",
+      "triangles": 2528
+    },
+    {
+      "name": "Frigate_Mizzenmast_Sail_1",
+      "source": "Frigate_Mizzenmast_Sail_1",
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Mizzenmast_Sail_1_Boltropes_And_Seams",
+      "source": "Frigate_Mizzenmast_Sail_1_Boltropes_And_Seams",
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Mizzenmast_Sail_2",
+      "source": "Frigate_Mizzenmast_Sail_2",
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Mizzenmast_Sail_2_Boltropes_And_Seams",
+      "source": "Frigate_Mizzenmast_Sail_2_Boltropes_And_Seams",
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Mizzenmast_Shrouds_Ratlines_And_Running_Rig",
+      "source": "Frigate_Mizzenmast_Shrouds_Ratlines_And_Running_Rig",
+      "triangles": 6920
+    },
+    {
+      "name": "Frigate_Mizzenmast_Spars_And_Tops",
+      "source": "Frigate_Mizzenmast_Spars_And_Tops",
+      "triangles": 1704
+    },
+    {
+      "name": "Frigate_Open_Hatch_Coaming",
+      "source": "Frigate_Open_Hatch_Coaming",
+      "triangles": 352
+    },
+    {
+      "name": "Frigate_Rudder_Blade",
+      "source": "Frigate_Rudder_Blade",
+      "triangles": 184
+    },
+    {
+      "name": "Frigate_Rudder_Gudgeons_And_Straps",
+      "source": "Frigate_Rudder_Gudgeons_And_Straps",
+      "triangles": 596
+    },
+    {
+      "name": "Frigate_Rudder_Stock",
+      "source": "Frigate_Rudder_Stock",
+      "triangles": 52
+    },
+    {
+      "name": "Frigate_Ship_Wheel",
+      "source": "Frigate_Ship_Wheel",
+      "triangles": 1404
+    },
+    {
+      "name": "Frigate_Stepped_Cambered_Quarterdecks",
+      "source": "Frigate_Stepped_Cambered_Quarterdecks",
+      "triangles": 1968
+    },
+    {
+      "name": "Frigate_Stern_Gallery",
+      "source": "Frigate_Stern_Gallery",
+      "triangles": 216
+    },
+    {
+      "name": "Frigate_Stern_Gallery_Windows_And_Mouldings",
+      "source": "Frigate_Stern_Gallery_Windows_And_Mouldings",
+      "triangles": 12002
+    },
+    {
+      "name": "Frigate_Stern_Transom_Planking",
+      "source": "Frigate_Stern_Transom_Planking",
+      "triangles": 1712
+    },
+    {
+      "name": "Frigate_Sternpost_And_Deadwood",
+      "source": "Frigate_Sternpost_And_Deadwood",
+      "triangles": 332
+    },
+    {
+      "name": "Frigate_Wales_And_Gold_Trim",
+      "source": "Frigate_Wales_And_Gold_Trim",
+      "triangles": 13776
+    },
+    {
+      "name": "Frigate_Wheel_Pedestal",
+      "source": "Frigate_Wheel_Pedestal",
+      "triangles": 420
+    }
+  ]
+}

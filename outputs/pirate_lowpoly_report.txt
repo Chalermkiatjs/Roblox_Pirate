@@ -1,0 +1,8 @@
+Pirate_LowPoly export report
+Evaluated character triangles: 14087
+Editable character mesh objects: 160
+Collection: Pirate_LowPoly
+Root empty: Pirate_LowPoly_Root
+Original Cube preserved and hidden from render/viewport.
+No full-body Subdivision Surface modifier used; smooth shading, weighted normals, and small bevel modifiers are used only on hard-surface/edge pieces.
+Materials include procedural noise/bump for fabric, leather, hair, metal and linen details to avoid extra geometry.

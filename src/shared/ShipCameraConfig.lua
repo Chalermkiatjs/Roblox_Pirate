@@ -1,0 +1,17 @@
+return {
+    FieldOfView = 65,
+    SpeedFieldOfView = 5,
+    DefaultPitch = math.rad(18),
+    MinPitch = math.rad(5),
+    MaxPitch = math.rad(55),
+    FollowResponse = 6,
+    HeadingResponse = 5,
+    RecenterDelay = 3,
+    RecenterResponse = 2,
+    MouseSensitivity = 0.004,
+    TouchSensitivity = 0.005,
+    GamepadSensitivity = 1.8,
+    MinZoom = 0.8,
+    MaxZoom = 1.6,
+    CollisionPadding = 2,
+}

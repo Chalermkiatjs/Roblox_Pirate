@@ -34,6 +34,7 @@ return function()
             if attack.defeatedBoss then defeated = true break end
         end
         assert(defeated and profile.stats.krakenDefeats == 1)
+        assert(profile.bounty == require(game.ReplicatedStorage.PirateOcean.CombatConfig).KrakenBounty, "Kraken bounty missing")
         assert(profile.collection.KrakenHeart == 1)
     end)
     Boss.reset(player)

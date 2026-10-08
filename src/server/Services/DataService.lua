@@ -4,6 +4,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local sharedRoot = ReplicatedStorage:WaitForChild("PirateOcean")
 local Constants = require(sharedRoot.Constants)
 local SaveSchema = require(sharedRoot.SaveSchema)
+local CombatConfig = require(sharedRoot.CombatConfig)
+local CombatRules = require(sharedRoot.Util.CombatRules)
 
 local DataService = {}
 
@@ -70,6 +72,13 @@ function DataService.addGold(player, amount)
     end
 
     profile.gold += amount
+end
+
+function DataService.addBounty(player, amount)
+    local profile = DataService.getProfile(player)
+    if not profile then return end
+    profile.bounty = CombatRules.bounty(profile.bounty, amount, CombatConfig.MaxBounty)
+    return profile.bounty
 end
 
 function DataService.spendGold(player, amount)

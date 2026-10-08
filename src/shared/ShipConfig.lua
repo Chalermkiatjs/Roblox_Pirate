@@ -6,7 +6,7 @@ local ShipConfig = {
             cost = 0,
             maxHealth = 100,
             cargoSlots = 10,
-            speed = 18,
+            speed = 22,
             cannonPower = 4,
             maxDepth = 1,
             crewSlots = 1,
@@ -17,7 +17,7 @@ local ShipConfig = {
             cost = 650,
             maxHealth = 220,
             cargoSlots = 28,
-            speed = 26,
+            speed = 31,
             cannonPower = 12,
             maxDepth = 2,
             crewSlots = 2,
@@ -28,7 +28,7 @@ local ShipConfig = {
             cost = 2400,
             maxHealth = 480,
             cargoSlots = 60,
-            speed = 32,
+            speed = 38,
             cannonPower = 28,
             maxDepth = 4,
             crewSlots = 3,
@@ -52,4 +52,3 @@ function ShipConfig.getNextTier(tierId)
 end
 
 return ShipConfig
-

@@ -1,0 +1,410 @@
+{
+  "reference": "Large three-masted frigate at the upper centre of the user-supplied ship sheet",
+  "units": "metres",
+  "bow_axis": "-X",
+  "mesh_objects": 79,
+  "evaluated_triangles": 209862,
+  "components": [
+    {
+      "name": "Frigate_Wales_And_Gold_Trim",
+      "vertices": 6912,
+      "triangles": 13776
+    },
+    {
+      "name": "Frigate_Gunport_Frames_And_Lids",
+      "vertices": 1360,
+      "triangles": 2040
+    },
+    {
+      "name": "Frigate_Anchors_And_Bow_Headrails",
+      "vertices": 540,
+      "triangles": 1032
+    },
+    {
+      "name": "Frigate_Keel_Closure",
+      "vertices": 208,
+      "triangles": 104
+    },
+    {
+      "name": "Frigate_Sternpost_And_Deadwood",
+      "vertices": 172,
+      "triangles": 332
+    },
+    {
+      "name": "Frigate_Rudder_Stock",
+      "vertices": 28,
+      "triangles": 52
+    },
+    {
+      "name": "Frigate_Rudder_Blade",
+      "vertices": 94,
+      "triangles": 184
+    },
+    {
+      "name": "Frigate_Rudder_Gudgeons_And_Straps",
+      "vertices": 344,
+      "triangles": 596
+    },
+    {
+      "name": "Frigate_Bow_Stem",
+      "vertices": 786,
+      "triangles": 1560
+    },
+    {
+      "name": "Frigate_Hull_Planking",
+      "vertices": 22256,
+      "triangles": 33384
+    },
+    {
+      "name": "Frigate_Keel_Stem_Transom",
+      "vertices": 488,
+      "triangles": 968
+    },
+    {
+      "name": "Frigate_Stern_Transom_Planking",
+      "vertices": 858,
+      "triangles": 1712
+    },
+    {
+      "name": "Frigate_Cannon_Port_01",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_02",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_03",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_04",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_05",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_06",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_07",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_08",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_09",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Port_10",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_01",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_02",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_03",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_04",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_05",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_06",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_07",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_08",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_09",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Cannon_Starboard_10",
+      "vertices": 224,
+      "triangles": 408
+    },
+    {
+      "name": "Frigate_Stern_Gallery",
+      "vertices": 112,
+      "triangles": 216
+    },
+    {
+      "name": "Frigate_Stern_Gallery_Windows_And_Mouldings",
+      "vertices": 6588,
+      "triangles": 12002
+    },
+    {
+      "name": "Frigate_Main_Deck_Planks",
+      "vertices": 6704,
+      "triangles": 10056
+    },
+    {
+      "name": "Frigate_Deck_Fittings",
+      "vertices": 2552,
+      "triangles": 4732
+    },
+    {
+      "name": "Frigate_Wheel_Pedestal",
+      "vertices": 216,
+      "triangles": 420
+    },
+    {
+      "name": "Frigate_Ship_Wheel",
+      "vertices": 748,
+      "triangles": 1404
+    },
+    {
+      "name": "Frigate_Gun_Deck_Floor",
+      "vertices": 6960,
+      "triangles": 10440
+    },
+    {
+      "name": "Frigate_Interior_Frames_And_Beams",
+      "vertices": 750,
+      "triangles": 1356
+    },
+    {
+      "name": "Frigate_Interior_Bulkheads",
+      "vertices": 320,
+      "triangles": 480
+    },
+    {
+      "name": "Frigate_Open_Hatch_Coaming",
+      "vertices": 204,
+      "triangles": 352
+    },
+    {
+      "name": "Frigate_Companionway_Stairs",
+      "vertices": 408,
+      "triangles": 648
+    },
+    {
+      "name": "Frigate_Interior_Cargo_And_Berths",
+      "vertices": 256,
+      "triangles": 384
+    },
+    {
+      "name": "Frigate_Interior_Lanterns",
+      "vertices": 504,
+      "triangles": 816
+    },
+    {
+      "name": "Frigate_Deck_Access_Stairs",
+      "vertices": 416,
+      "triangles": 632
+    },
+    {
+      "name": "Frigate_Bulwarks_And_Railings",
+      "vertices": 3528,
+      "triangles": 6392
+    },
+    {
+      "name": "Frigate_Stepped_Cambered_Quarterdecks",
+      "vertices": 988,
+      "triangles": 1968
+    },
+    {
+      "name": "Frigate_Foremast_Spars_And_Tops",
+      "vertices": 960,
+      "triangles": 1748
+    },
+    {
+      "name": "Frigate_Mainmast_Spars_And_Tops",
+      "vertices": 960,
+      "triangles": 1748
+    },
+    {
+      "name": "Frigate_Mizzenmast_Spars_And_Tops",
+      "vertices": 936,
+      "triangles": 1704
+    },
+    {
+      "name": "Frigate_Bowsprit_And_Booms",
+      "vertices": 876,
+      "triangles": 1696
+    },
+    {
+      "name": "Frigate_Foremast_Sail_1",
+      "vertices": 1102,
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Foremast_Sail_1_Boltropes_And_Seams",
+      "vertices": 2192,
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Foremast_Sail_2",
+      "vertices": 1102,
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Foremast_Sail_2_Boltropes_And_Seams",
+      "vertices": 2192,
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Foremast_Sail_3",
+      "vertices": 1102,
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Foremast_Sail_3_Boltropes_And_Seams",
+      "vertices": 2192,
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_1",
+      "vertices": 1102,
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_1_Boltropes_And_Seams",
+      "vertices": 2192,
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_2",
+      "vertices": 1102,
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_2_Boltropes_And_Seams",
+      "vertices": 2192,
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_3",
+      "vertices": 1102,
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Mainmast_Sail_3_Boltropes_And_Seams",
+      "vertices": 2192,
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Mizzenmast_Sail_1",
+      "vertices": 1102,
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Mizzenmast_Sail_1_Boltropes_And_Seams",
+      "vertices": 2192,
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Mizzenmast_Sail_2",
+      "vertices": 1102,
+      "triangles": 2200
+    },
+    {
+      "name": "Frigate_Mizzenmast_Sail_2_Boltropes_And_Seams",
+      "vertices": 2192,
+      "triangles": 4236
+    },
+    {
+      "name": "Frigate_Flying_Jib",
+      "vertices": 650,
+      "triangles": 1296
+    },
+    {
+      "name": "Frigate_Flying_Jib_Boltropes_And_Seams",
+      "vertices": 1290,
+      "triangles": 2528
+    },
+    {
+      "name": "Frigate_Inner_Jib",
+      "vertices": 650,
+      "triangles": 1296
+    },
+    {
+      "name": "Frigate_Inner_Jib_Boltropes_And_Seams",
+      "vertices": 1290,
+      "triangles": 2528
+    },
+    {
+      "name": "Frigate_Mizzen_Gaff_Sail",
+      "vertices": 650,
+      "triangles": 1296
+    },
+    {
+      "name": "Frigate_Mizzen_Gaff_Sail_Boltropes_And_Seams",
+      "vertices": 1290,
+      "triangles": 2528
+    },
+    {
+      "name": "Frigate_Mainmast_Pennant",
+      "vertices": 34,
+      "triangles": 32
+    },
+    {
+      "name": "Frigate_Foremast_Shrouds_Ratlines_And_Running_Rig",
+      "vertices": 4100,
+      "triangles": 7616
+    },
+    {
+      "name": "Frigate_Mainmast_Shrouds_Ratlines_And_Running_Rig",
+      "vertices": 4100,
+      "triangles": 7616
+    },
+    {
+      "name": "Frigate_Mizzenmast_Shrouds_Ratlines_And_Running_Rig",
+      "vertices": 3740,
+      "triangles": 6920
+    },
+    {
+      "name": "Frigate_Forestays_And_Connecting_Stays",
+      "vertices": 840,
+      "triangles": 1624
+    }
+  ],
+  "materials": "Procedural weathered materials in .blend; solid base colors in GLB and FBX",
+  "game_import": "Detailed source asset. LOD, texture baking, collision and sail animation are not included.",
+  "hull_detail_revision": "Proud curved bow stem; sternpost and longitudinal rudder; raked two-tier gallery; no aft stairs",
+  "interior_revision": 2,
+  "collision_revision": 3,
+  "interior": "Sealed planks, open companionway, gun deck, lanterns and aft-facing wheel grips"
+}

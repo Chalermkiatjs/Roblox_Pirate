@@ -2,6 +2,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local sharedRoot = ReplicatedStorage:WaitForChild("PirateOcean")
 local BossConfig = require(sharedRoot.BossConfig)
+local CombatConfig = require(sharedRoot.CombatConfig)
 local DataService = require(script.Parent.DataService)
 local ShipService = require(script.Parent.ShipService)
 local TreasureService = require(script.Parent.TreasureService)
@@ -38,6 +39,7 @@ function BossService.attackKraken(player)
         activeKrakenHealth[player] = nil
         profile.stats.krakenDefeats += 1
         DataService.addGold(player, boss.rewardGold)
+        DataService.addBounty(player, CombatConfig.KrakenBounty)
 
         for itemId, amount in pairs(boss.rewardItems) do
             local cargoAmount = math.min(amount, TreasureService.remainingSlots(player))

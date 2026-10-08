@@ -1,0 +1,21 @@
+{
+  "fbx_round_trip": "passed",
+  "mesh_objects": 80,
+  "triangles": 209862,
+  "maximum_triangles_per_mesh": 18000,
+  "distinct_vertex_colors": 20,
+  "dimensions_studs": [
+    14.107451438903809,
+    37.09634552150965,
+    55.81797790527344
+  ],
+  "revised_bow_stern_rudder_present": true,
+  "removed_stairs_absent": true,
+  "accessible_interior_present": true,
+  "interior_revision": 2,
+  "round_trip_hatch_open": true,
+  "round_trip_interior_floor": true,
+  "closed_transom_and_roofs": true,
+  "outward_transom_samples": 90,
+  "studio_import": "Not tested; Windows control runtime failed to start"
+}

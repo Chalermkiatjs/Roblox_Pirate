@@ -1,0 +1,16 @@
+return {
+    Distance = 10,
+    MinDistance = 5,
+    MaxDistance = 18,
+    ShoulderOffset = 1.5,
+    FocusHeight = 1.8,
+    FieldOfView = 70,
+    DefaultPitch = math.rad(10),
+    MinPitch = math.rad(-55),
+    MaxPitch = math.rad(65),
+    MouseSensitivity = 0.004,
+    TouchSensitivity = 0.005,
+    GamepadSensitivity = 1.8,
+    FollowResponse = 12,
+    CollisionPadding = 0.6,
+}

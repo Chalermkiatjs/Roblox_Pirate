@@ -1,0 +1,17 @@
+{
+  "base_triangles": 13265,
+  "evaluated_triangles_including_solidify_and_bevel": 14632,
+  "character_mesh_objects": 182,
+  "base_face_types": {
+    "quads": 4852,
+    "triangles": 2598,
+    "ngons": 123
+  },
+  "preserved_old_collection": "Pirate_LowPoly_Previous (hidden)",
+  "pose": "A-pose",
+  "subdivision_modifiers": 0,
+  "UV": "Smart projected per mesh; not a production packed atlas",
+  "materials": "Procedural cloth and leather bump; no baked normal map",
+  "rig": "Not rigged; deformation not tested",
+  "limitations": "Simplified stylized interpretation; facial likeness and garment microdetail do not match reference exactly. Secondary ornament meshes have simplified triangle topology."
+}
